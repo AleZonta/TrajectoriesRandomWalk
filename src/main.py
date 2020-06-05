@@ -19,6 +19,8 @@ import logging
 import os
 import sys
 
+from src.Experiment.Controller import Controller
+from src.Loaders.Attractiveness import ForcedAttractiveness
 from src.Settings.args import args
 
 if __name__ == '__main__':

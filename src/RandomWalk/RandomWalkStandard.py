@@ -36,3 +36,5 @@ def random_walk_standard(apf, start, distance_target, pre_matrix):
 
         current_node = points_on_the_street[index_max]
         final_trajectory.append(current_node)
+
+    return final_trajectory

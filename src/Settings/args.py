@@ -35,6 +35,8 @@ def prepare_parser():
     parser.add_argument("--n_tra_generated", type=int, default=50)
     parser.add_argument("--total_distance_to_travel", type=int, default=5000)
 
+    parser.add_argument("--type_random_walk", type=int, default=1, choices=[0, 1, 2],
+                        help="0 standard, 1 no already visited, 2 weighted standard, 3 weighted already visited")
     return parser
 
 

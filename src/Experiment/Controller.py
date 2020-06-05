@@ -21,6 +21,7 @@ import pickle
 from sklearn.externals.joblib import Parallel, delayed
 
 from src.Helpers.Division.ComputeDivision import SubMatrix
+from src.Individual.GenerativeIndividual import TrajectoryGeneration
 from src.Loaders.GenomePhenome import GenomeMeaning
 from src.Loaders.LoadAPF import LoadAPF
 from src.Loaders.PlacesOnRoute import FindPlacesOnRoutes
@@ -84,7 +85,7 @@ class Controller(object):
                                           apf=self._loader_apf.apf, genome_meaning=self._loader_genome_meaning,
                                           pre_matrix=self._sub_matrix,
                                           type_of_generator=args.type_generator,
-                                          type_astar=args.type_astar,
+                                          type_astar=args.type_random_walk,
                                           pre_loaded_points=self._pre_loaded_points,
                                           total_distance_to_travel=args.total_distance_to_travel)
 

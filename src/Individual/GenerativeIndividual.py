@@ -20,6 +20,7 @@ import numpy as np
 import random
 from haversine import haversine
 
+from src.RandomWalk.PointGenerator import PointGenerator
 
 K = 0.1
 TIMESTEP = 1
@@ -42,8 +43,7 @@ class TrajectoryGeneration(object):
         self._pre_loaded_points = pre_loaded_points
         self._pre_matrix = pre_matrix
         #
-        self.generator = PointGenerator(typology_needed=type_of_generator, pre_matrix=self._pre_matrix,
-                                        type_astar=type_astar)
+        self.generator = PointGenerator(typology_needed=type_of_generator, pre_matrix=self._pre_matrix)
         self._total_distance_to_travel = total_distance_to_travel
 
     def create_trajectory(self, random_seed, idx):

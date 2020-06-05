@@ -20,7 +20,7 @@ import numpy as np
 from src.Utils.Funcs import list_neighbours
 
 
-def random_walk_standard(apf, start, distance_target, pre_matrix, genome, K):
+def random_walk_weighted(apf, start, distance_target, pre_matrix, genome, K):
     # start from the first point
     final_trajectory = [start]
 
@@ -37,3 +37,5 @@ def random_walk_standard(apf, start, distance_target, pre_matrix, genome, K):
         index_max = np.random.choice(a=points_on_the_street, size=1, p=total_charge)
         current_node = points_on_the_street[index_max]
         final_trajectory.append(current_node)
+
+    return final_trajectory
