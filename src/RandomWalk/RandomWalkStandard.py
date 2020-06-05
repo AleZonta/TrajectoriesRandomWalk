@@ -32,7 +32,7 @@ def random_walk_standard(apf, start, distance_target, pre_matrix):
         points_on_the_street = pre_matrix.keep_only_points_on_street(points=points)
 
         # random walk, select randomly where to go
-        index_max = np.random.random_integers(low=0, high=len(points_on_the_street))
+        index_max = np.random.random_integers(low=0, high=len(points_on_the_street) - 1)
 
         current_node = points_on_the_street[index_max]
         final_trajectory.append(current_node)

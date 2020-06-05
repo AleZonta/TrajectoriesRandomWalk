@@ -79,13 +79,12 @@ class Controller(object):
         self._list_genome = vector_data
 
     def initialise_individual_and_run(self, save_path, how_many, version="0", debug=False):
-        individual = TrajectoryGeneration(x_value=args.x_value,
+        individual = TrajectoryGeneration(
                                           genotype=self._list_genome,
                                           values_matrix=(self._loader_apf.x_values, self._loader_apf.y_values),
-                                          apf=self._loader_apf.apf, genome_meaning=self._loader_genome_meaning,
+                                          apf=self._loader_apf.apf,
                                           pre_matrix=self._sub_matrix,
-                                          type_of_generator=args.type_generator,
-                                          type_astar=args.type_random_walk,
+                                          type_of_generator=args.type_random_walk,
                                           pre_loaded_points=self._pre_loaded_points,
                                           total_distance_to_travel=args.total_distance_to_travel)
 

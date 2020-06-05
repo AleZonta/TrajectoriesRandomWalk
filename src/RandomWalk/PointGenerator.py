@@ -27,12 +27,7 @@ class PointGenerator(object):
     """
 
     def __init__(self, typology_needed, pre_matrix):
-        if typology_needed == "weighted":
-            self._type = 1
-        elif typology_needed == "default":
-            self._type = 0
-        else:
-            raise ValueError("Type requested not implemented")
+        self._type = typology_needed
         self.pre_matrix = pre_matrix
 
     def get_path(self, total_distance, genome, K, current_node, apf):
@@ -54,7 +49,7 @@ class PointGenerator(object):
         elif self._type == 2:
             return random_walk_weighted(apf=apf, start=current_node, distance_target=total_distance,
                                         pre_matrix=self.pre_matrix, genome=genome, K=K)
-        elif self._type == 2:
+        elif self._type == 3:
             return random_walk_weighted_no_visited(apf=apf, start=current_node, distance_target=total_distance,
                                                    pre_matrix=self.pre_matrix, genome=genome, K=K)
         else:

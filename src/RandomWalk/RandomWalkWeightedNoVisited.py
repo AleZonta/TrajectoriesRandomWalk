@@ -34,7 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import numpy as np
 
-from src.Utils.Funcs import list_neighbours
+from src.Utils.Funcs import list_neighbours, _standard_normalisation
 
 
 def random_walk_weighted_no_visited(apf, start, distance_target, pre_matrix, genome, K):
@@ -54,11 +54,18 @@ def random_walk_weighted_no_visited(apf, start, distance_target, pre_matrix, gen
         real_points_on_the_street = [node for node in points_on_the_street if
                                      "{}-{}".format(node.x, node.y) not in already_visited]
 
-        total_charge = pre_matrix.return_charge_from_point(current_position=current_node, genome=genome, K=K)
+        if len(real_points_on_the_street) == 0:
+            break
+        total_charges = [pre_matrix.return_charge_from_point(current_position=node, genome=genome, K=K) for node in real_points_on_the_street]
+
+        total_charges_normalised = [_standard_normalisation(old_value=el, old_min=min(total_charges),
+                                                            old_max=max(total_charges), new_min=0, new_max=1)
+                                    for el in total_charges]
+        total_charges = [el / sum(total_charges_normalised) for el in total_charges_normalised]
 
         # random walk, select randomly where to go
-        index_max = np.random.choice(a=real_points_on_the_street, size=1, p=total_charge)
-        current_node = points_on_the_street[index_max]
+        current_node = np.random.choice(a=real_points_on_the_street, size=1, p=total_charges)[0]
         final_trajectory.append(current_node)
+        already_visited["{}-{}".format(current_node.x, current_node.y)] = 1
 
     return final_trajectory

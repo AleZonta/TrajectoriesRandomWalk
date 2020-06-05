@@ -187,3 +187,14 @@ def keep_only_points_on_street(apf, points):
     return points_on_street
 
 
+def _standard_normalisation(old_value, old_min, old_max, new_min, new_max):
+    """
+    Normalisation function
+    :param old_value: old value to convert
+    :param old_min: old minimum
+    :param old_max: old maximum
+    :param new_min: new minimum
+    :param new_max: new maximum
+    :return: value converted in the new range
+    """
+    return (((old_value - old_min) * (new_max - new_min)) / (old_max - old_min)) + new_min

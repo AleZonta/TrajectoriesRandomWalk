@@ -21,25 +21,24 @@ import random
 from haversine import haversine
 
 from src.RandomWalk.PointGenerator import PointGenerator
+from src.Utils.Point import Point
+from src.Utils.RandomWrappers import random_wrapper_lognorm
 
 K = 0.1
 TIMESTEP = 1
 
 
 class TrajectoryGeneration(object):
-    def __init__(self, x_value, values_matrix, apf, genome_meaning, pre_loaded_points,
-                 type_of_generator, pre_matrix, type_astar, genotype=None, total_distance_to_travel=5000):
+    def __init__(self, values_matrix, apf, pre_loaded_points,
+                 type_of_generator, pre_matrix, genotype=None, total_distance_to_travel=5000):
         self.path = []
         self.tra = []
         self.tra_real_coordinates = []
-
-        self._x_value = x_value
 
         self.genome = genotype
         #
         self._values_matrix = values_matrix
         self._apf = apf
-        self._genome_meaning = genome_meaning
         self._pre_loaded_points = pre_loaded_points
         self._pre_matrix = pre_matrix
         #
@@ -78,10 +77,8 @@ class TrajectoryGeneration(object):
             self.path.append(current_node)
             # get the path using the methodology chosen
             self.path = self.generator.get_path(total_distance=self._total_distance_to_travel,
-                                                genome=self.genome, genome_meaning=self._genome_meaning,
-                                                values_matrix=self._values_matrix, K=K, distances=distances,
-                                                current_node=current_node, apf=self._apf.shape,
-                                                x_value=self._x_value)
+                                                genome=self.genome, K=K,
+                                                current_node=current_node, apf=self._apf.shape)
 
         if len(distances) == 0:
             for i in range(len(self.path) - 1):

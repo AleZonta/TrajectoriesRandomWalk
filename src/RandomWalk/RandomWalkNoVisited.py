@@ -36,8 +36,10 @@ def random_walk_no_visited(apf, start, distance_target, pre_matrix):
         # check if nodes are already visited
         real_points_on_the_street = [node for node in points_on_the_street if "{}-{}".format(node.x, node.y) not in already_visited]
 
+        if len(real_points_on_the_street) == 0:
+            break
         # random walk, select randomly where to go
-        index_max = np.random.random_integers(low=0, high=len(real_points_on_the_street))
+        index_max = np.random.random_integers(low=0, high=len(real_points_on_the_street) - 1)
         current_node = real_points_on_the_street[index_max]
         final_trajectory.append(current_node)
         already_visited["{}-{}".format(current_node.x, current_node.y)] = 1
