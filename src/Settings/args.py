@@ -28,7 +28,7 @@ def prepare_parser():
     parser.add_argument("--west", type=float, default=14.1)
 
     # general settings
-    parser.add_argument("--name_exp", default="test_random_walk")
+    parser.add_argument("--name_exp", default="test_b")
     parser.add_argument("--data_path", default="/Users/alessandrozonta/PycharmProjects/astar/data/")
     parser.add_argument("--output_path", default="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
     parser.add_argument("--apf_name", default="the_right_one_fast")
@@ -37,6 +37,11 @@ def prepare_parser():
 
     parser.add_argument("--type_random_walk", type=int, default=3, choices=[0, 1, 2, 3],
                         help="0 standard, 1 no already visited, 2 weighted standard, 3 weighted already visited")
+    # fitness settings
+    parser.add_argument("--point_distance", type=eval, help="Select witch term to use for fitness only distance to "
+                                                            "central point")
+
+    parser.add_argument("--random_seed", type=int, default=422, help="random seed")
     return parser
 
 

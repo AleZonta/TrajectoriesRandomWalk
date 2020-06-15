@@ -28,8 +28,8 @@ from src.Loaders.PlacesOnRoute import FindPlacesOnRoutes
 from src.Settings.args import args
 
 
-def worker_job_lib(individual, idx):
-    distances, tra, real_tra, path = individual.create_trajectory(random_seed=10, idx=idx)
+def worker_job_lib(individual, idx, random_seed):
+    distances, tra, real_tra, path = individual.create_trajectory(random_seed=random_seed, idx=idx)
     return (distances, tra, real_tra, path)
 
 
@@ -78,7 +78,7 @@ class Controller(object):
         """
         self._list_genome = vector_data
 
-    def initialise_individual_and_run(self, save_path, how_many, version="0", debug=False):
+    def initialise_individual_and_run(self, save_path, how_many, version="0", debug=False, random_seed=42):
         individual = TrajectoryGeneration(
                                           genotype=self._list_genome,
                                           values_matrix=(self._loader_apf.x_values, self._loader_apf.y_values),
@@ -97,7 +97,7 @@ class Controller(object):
             # serial execution
             number_of_processes = 1
         with Parallel(n_jobs=number_of_processes, verbose=30) as parallel:
-            res = parallel(delayed(worker_job_lib)(individual, i) for i in range(how_many))
+            res = parallel(delayed(worker_job_lib)(individual, i, random_seed) for i in range(how_many))
             results.append(res)
 
         # distances, tra, real_tra, path, preloaded_points

@@ -56,12 +56,9 @@ def random_walk_weighted_no_visited(apf, start, distance_target, pre_matrix, gen
 
         if len(real_points_on_the_street) == 0:
             break
-        total_charges = [pre_matrix.return_charge_from_point(current_position=node, genome=genome, K=K) for node in real_points_on_the_street]
 
-        total_charges_normalised = [_standard_normalisation(old_value=el, old_min=min(total_charges),
-                                                            old_max=max(total_charges), new_min=0, new_max=1)
-                                    for el in total_charges]
-        total_charges = [el / sum(total_charges_normalised) for el in total_charges_normalised]
+        total_charges = [pre_matrix.return_charge_from_point(current_position=node, genome=genome, K=K) for node in real_points_on_the_street]
+        total_charges = np.array([el / sum(total_charges) for el in total_charges])
 
         # random walk, select randomly where to go
         current_node = np.random.choice(a=real_points_on_the_street, size=1, p=total_charges)[0]
