@@ -69,7 +69,7 @@ if __name__ == '__main__':
         else:
             logger.info("Successfully created the directory %s " % path)
             a.set_vector_data(vector_data=vector)
-            a.initialise_individual_and_run(save_path=path, how_many=args.n_tra_generated, debug=False,
+            a.initialise_individual_and_run(save_path=path, how_many=args.n_tra_generated, debug=True,
                                             random_seed=args.random_seed)
 
         name_counter += 1

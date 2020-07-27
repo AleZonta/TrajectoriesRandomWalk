@@ -15,14 +15,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+import copy
+import glob
 import logging
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.stats import stats
 from tqdm import tqdm, trange
 
-from src.Analysis.Utils.funcs import compute_direction
+from src.Analysis.Utils.funcs import compute_direction, sorted_nicely
 from src.Analysis.data_loader import DataLoader
 from src.Helpers.Fitness.ValueGraphFitness import convert, MAX_FITNESS
 from src.Settings.args import args
@@ -122,23 +125,112 @@ if __name__ == '__main__':
     logger.info("Starting script")
 
     a = AstarFitnessAnalyser(log=logger)
-    a.print_graphs(name_to_read="random_walk_standard", path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+
+    # get all the h5 files
+    # find all the save files
+    path_to_read = "/Users/alessandrozonta/Desktop/output_random_walk/"
+    correct_files = glob.glob("{}/*_save".format(path_to_read))
 
 
-    a.read_data(path="/Users/alessandrozonta/PycharmProjects/random_walk/output/random_walk_standard_no_visited/")
-    a.print_fitness_per_tra(name_to_save="random_walk_standard_no_visited",
-                            path_to_save="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
-    a.print_graphs(name_to_read="random_walk_standard_no_visited", path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    # different_fitness
+    fit = ["fitness_no_visited_seed_pd0_", "fitness_no_visited_seed_pd1_", "fitness_no_visited_seed_pd01_", "fitness_no_visited_seed_pd012_",
+           "fitness_no_visited_seed_pd2_", "fitness_no_visited_seed_pd12_", "fitness_no_visited_seed_pd02_", "fitness_no_visited_seed_standard_",
+           "fitness_seed_pd0_", "fitness_seed_pd1_", "fitness_seed_pd01_", "fitness_seed_pd012_",
+           "fitness_seed_pd2_", "fitness_seed_pd12_", "fitness_seed_pd02_", "fitness_seed_standard_",
+           "standard_weighted_no_visited_seed_", "standard_weighted_seed_"]
+    real_names = ["RWFBNV0", "RWFBNV1", "RWFBNV01", "RWFBNV012", "RWFBNV2", "RWFBNV12", "RWFBNV02", "RWFBNV",
+                  "RWFB0", "RWFB1", "RWFB01", "RWFB012", "RWFB2", "RWFB12", "RWFB02", "RWFB",
+                  "RWABNV", "RWAB"]
+    rnm = dict(zip(fit, real_names))
 
-    a.read_data(path="/Users/alessandrozonta/PycharmProjects/random_walk/output/random_walk_standard_weighted/")
-    a.print_fitness_per_tra(name_to_save="random_walk_standard_weighted",
-                            path_to_save="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
-    a.print_graphs(name_to_read="random_walk_standard_weighted",
-                   path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    data_exp = []
+    for f in fit:
+        repetitions = [el for el in correct_files if f in el]
+        logger.debug("{} - {}".format(f, len(repetitions)))
+        for el in repetitions:
+            correct_files.remove(el)
+        dataframes = [pd.read_hdf(el) for el in repetitions]
+        single_dataframe = pd.concat(dataframes)
+        source = [rnm[f] for _ in range(single_dataframe.shape[0])]
+        single_dataframe['source'] = source
+        data_exp.append(single_dataframe)
+    df = pd.concat(data_exp)
 
-    a.read_data(path="/Users/alessandrozonta/PycharmProjects/random_walk/output/random_walk_weighted_no_visited/")
-    a.print_fitness_per_tra(name_to_save="random_walk_weighted_no_visited",
-                            path_to_save="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
-    a.print_graphs(name_to_read="random_walk_weighted_no_visited",
-                   path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    min_dataframe = abs(df["fitness"].min())
+    df["fitness"] = (df["fitness"] + min_dataframe) / (700 + min_dataframe)
+    df["direction"] = df["direction"] / 800
+    df["no_overlapping"] = df["no_overlapping"] / 200
 
+    small_dataset = df[["direction", "fitness", "no_overlapping", "source"]]
+    small_dataset.columns = ['Directions', 'Fitness', "No_Overlapping", "Source"]
+
+    reshaped = small_dataset.melt(id_vars=['Source'], value_vars=['No_Overlapping', 'Fitness', 'Directions'])
+    reshaped.columns = ['Versions', 'Measurements', "Score"]
+    sns.boxplot(x="Measurements", y="Score", hue="Versions", data=reshaped, showfliers=False)
+    sns.despine(offset=10, trim=True)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    plt.savefig("{}/combined_graph_random_walk.pdf".format(path_to_read), bbox_inches='tight')
+    # plt.show()
+    plt.close()
+
+    # for name in real_names:
+    #     ax = sns.distplot(df[df["source"] == name]["total_length"], label=name, kde=False, rug=True)
+    sns.boxplot(x="source", y="total_length", data=df, showfliers=False)
+    # ax.set(xlabel='total length')
+    plt.legend()
+    sns.despine(offset=10, trim=True)
+    plt.savefig("{}/total_length_random_walk.pdf".format(path_to_read))
+    # plt.show()
+    plt.close()
+
+    to_check = ["fitness", "no_overlapping", "direction"]
+
+    for c in to_check:
+        for f in fit:
+            here_list = copy.deepcopy(fit)
+            here_list.remove(f)
+
+            total = []
+            # for el in here_list:
+            total.append(stats.ks_2samp(df[df["source"] == "fitness_no_visited_seed_pd0_"][c], df[df["source"] == "fitness_no_visited_seed_pd1_"][c]).pvalue)
+            logger.info(f)
+            logger.info(total)
+            logger.info(np.mean(np.array(total)))
+            logger.info(np.std(np.array(total)))
+            logger.info("---")
+
+        logger.info("------------------------")
+
+
+
+    #
+    # path = "/Users/alessandrozonta/Desktop/output_random_walk/"
+    # folders = sorted_nicely(glob.glob("{}*/".format(path)))
+    #
+    # for f in folders:
+    #     name_folder = f.split("/")[-1]
+    #
+    #     a.read_data(path="{}/{}".format(path, name_folder))
+    #     a.print_fitness_per_tra(name_to_save=name_folder,
+    #                             path_to_save="{}".format(path))
+    #
+    # a.print_graphs(name_to_read="random_walk_standard", path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    #
+    #
+    # a.read_data(path="/Users/alessandrozonta/PycharmProjects/random_walk/output/random_walk_standard_no_visited/")
+    # a.print_fitness_per_tra(name_to_save="random_walk_standard_no_visited",
+    #                         path_to_save="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    # a.print_graphs(name_to_read="random_walk_standard_no_visited", path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    #
+    # a.read_data(path="/Users/alessandrozonta/PycharmProjects/random_walk/output/random_walk_standard_weighted/")
+    # a.print_fitness_per_tra(name_to_save="random_walk_standard_weighted",
+    #                         path_to_save="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    # a.print_graphs(name_to_read="random_walk_standard_weighted",
+    #                path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    #
+    # a.read_data(path="/Users/alessandrozonta/PycharmProjects/random_walk/output/random_walk_weighted_no_visited/")
+    # a.print_fitness_per_tra(name_to_save="random_walk_weighted_no_visited",
+    #                         path_to_save="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    # a.print_graphs(name_to_read="random_walk_weighted_no_visited",
+    #                path_to_read="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
+    #

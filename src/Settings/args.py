@@ -28,15 +28,16 @@ def prepare_parser():
     parser.add_argument("--west", type=float, default=14.1)
 
     # general settings
-    parser.add_argument("--name_exp", default="test_b")
+    parser.add_argument("--name_exp", default="test_test_test")
     parser.add_argument("--data_path", default="/Users/alessandrozonta/PycharmProjects/astar/data/")
     parser.add_argument("--output_path", default="/Users/alessandrozonta/PycharmProjects/random_walk/output/")
     parser.add_argument("--apf_name", default="the_right_one_fast")
     parser.add_argument("--n_tra_generated", type=int, default=50)
     parser.add_argument("--total_distance_to_travel", type=int, default=5000)
 
-    parser.add_argument("--type_random_walk", type=int, default=3, choices=[0, 1, 2, 3],
-                        help="0 standard, 1 no already visited, 2 weighted standard, 3 weighted already visited")
+    parser.add_argument("--type_random_walk", type=int, default=4, choices=[0, 1, 2, 3, 4, 5],
+                        help="0 standard, 1 no already visited, 2 weighted standard, 3 weighted already visited,"
+                             " 4 weighted fitness, 5 weighted fitness already visited")
     # fitness settings
     parser.add_argument("--point_distance", type=eval, help="Select witch term to use for fitness only distance to "
                                                             "central point")

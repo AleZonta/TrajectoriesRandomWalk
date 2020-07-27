@@ -17,9 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import multiprocessing
 import pickle
-
-from sklearn.externals.joblib import Parallel, delayed
-
+from joblib import Parallel, delayed
 from src.Helpers.Division.ComputeDivision import SubMatrix
 from src.Individual.GenerativeIndividual import TrajectoryGeneration
 from src.Loaders.GenomePhenome import GenomeMeaning

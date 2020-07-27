@@ -15,6 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+from src.RandomWalk.RandomWalkFitness import random_walk_weighted_fitness
+from src.RandomWalk.RandomWalkFitnessNoVisited import random_walk_weighted_fitness_no_visited
 from src.RandomWalk.RandomWalkNoVisited import random_walk_no_visited
 from src.RandomWalk.RandomWalkStandard import random_walk_standard
 from src.RandomWalk.RandomWalkWeighted import random_walk_weighted
@@ -52,5 +54,11 @@ class PointGenerator(object):
         elif self._type == 3:
             return random_walk_weighted_no_visited(apf=apf, start=current_node, distance_target=total_distance,
                                                    pre_matrix=self.pre_matrix, genome=genome, K=K)
+        elif self._type == 4:
+            return random_walk_weighted_fitness(apf=apf, start=current_node, distance_target=total_distance,
+                                                pre_matrix=self.pre_matrix, genome=genome, K=K)
+        elif self._type == 5:
+            return random_walk_weighted_fitness_no_visited(apf=apf, start=current_node, distance_target=total_distance,
+                                                           pre_matrix=self.pre_matrix, genome=genome, K=K)
         else:
             raise ValueError("type not implemented")

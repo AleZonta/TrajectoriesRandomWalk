@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import numpy as np
 
-from src.Utils.Funcs import list_neighbours, _standard_normalisation
+from src.Utils.Funcs import list_neighbours
 
 
 def random_walk_weighted(apf, start, distance_target, pre_matrix, genome, K):
