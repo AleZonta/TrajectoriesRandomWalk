@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,6 +37,12 @@ class AstarFitnessAnalyser(DataLoader):
         super().__init__(log)
 
     def print_fitness_per_tra(self, name_to_save, path_to_save):
+        """
+        Generate files with features value per trajectory generated to use for the paper graphs
+        :param name_to_save:
+        :param path_to_save:
+        :return:
+        """
         # need to check from the same starting points with different behaviours
         # return all the tra same index
         df = pd.DataFrame(columns=['fitness', 'total_length', 'curliness', "f_d_to_p",

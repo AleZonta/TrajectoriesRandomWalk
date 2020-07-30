@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,22 +47,12 @@ class HugeCell(object):
         collector_for_value = self.matrix[a, b, index, 0, self.index]
         return collector_for_value
 
-    def add_value_back_to_matrix(self, data, point):
-        name_in_index = self._indexing.get("{}_{}".format(int(point.x), int(point.y)))
-        self.matrix[name_in_index] = data
-
-    def add_value_to_matrix(self, data, point):
-        name_in_index = "{}_{}".format(int(point.x), int(point.y))
-        self.matrix[name_in_index] = data
-
     def is_inside_cell(self, point):
         """
         Is the point inside the cell (using matrix coordinate)
         :param point: point to check
         :return: True if it is inside, otherwise False
         """
-        # if point.x == 3905 and point.y == 3410:
-        #     print("WUT")
         if self._min_x_cell <= point.x < self._max_x_cell and self._min_y_cell <= point.y < self._max_y_cell:
             return True
         return False

@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,21 @@ from src.Utils.Funcs import list_neighbours
 
 
 def random_walk_no_visited(apf, start, distance_target, pre_matrix):
+    """
+    Generate the trajectory using the random walk
+    From the starting point it finds the neighbour nodes
+    it checks if they are road
+    it checks if they are already visited
+    if no nodes available generation stops
+    compute the random next node
+    move to the chosen node
+    repeat
+    :param apf: artificial potential field, needed to check the neighbour node
+    :param start: starting point
+    :param distance_target: how many timestep max to generate
+    :param pre_matrix: preloaded attraction values
+    :return: list of nodes -> final trajectory
+    """
     already_visited = {}
     # start from the first point
     final_trajectory = [start]

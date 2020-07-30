@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,6 +31,12 @@ class DataLoader(object):
         self._real_tra_generated = []
 
     def read_data(self, path):
+        """
+        Read the output folders and store the trajectories and path for further analysis
+        Folder structure
+        :param path: location of the files on disk
+        :return:
+        """
         # read all the folders
         folders = sorted_nicely(glob.glob("{}*/".format(path)))
         for fold in tqdm(folders, desc="reading folders"):

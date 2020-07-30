@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -54,6 +54,11 @@ class FindPlacesOnRoutes(object):
         self.values = starting_point_train
 
     def get_point(self, idx_tra):
+        """
+        Get point given index
+        :param idx_tra: index to return
+        :return: coordinates point chosen
+        """
         first_point_str = self.values[idx_tra].split("-")
         starting_position_x = int(first_point_str[0])
         starting_position_y = int(first_point_str[1])

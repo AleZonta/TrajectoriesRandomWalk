@@ -1,6 +1,6 @@
 """
-GTEA. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -169,35 +169,3 @@ class SubMatrix(object):
             if cell.check_if_on_a_road(point=p):
                 points_on_street.append(p)
         return points_on_street
-
-    # def return_charge_from_point(self, current_position, genome, genome_meaning, K):
-    #     """
-    #     return the charge from the current points using the cells system
-    #     :param current_position: current position
-    #     :param genome: genome evolved
-    #     :param genome_meaning: meaning if every pos of the genome
-    #     :param K: constant for the computation of the charge
-    #     :return: double total charge
-    #     """
-    #     current_cell_id = self._list_of_cells.find_current_cell_from_matrix_coord(point=current_position)
-    #     total_charge = 0
-    #     cell = self._list_of_cells.get_cell_from_id(id=current_cell_id)
-    #
-    #     index = 0
-    #     for key, value in self._match_key_index.items():
-    #
-    #         # get the charge
-    #         charge = genome[genome_meaning.from_genome_to_value_describing_object(name_object=key)]
-    #
-    #         # add to the total charge
-    #         attractions_distances = cell.return_value_attraction(point=[current_position.x, current_position.y],
-    #                                                              index=index)
-    #         if attractions_distances is None:
-    #             raise ValueError()
-    #
-    #         here_charge = K * charge * attractions_distances
-    #         total_charge += here_charge
-    #
-    #         index += 1
-    #
-    #     return total_charge

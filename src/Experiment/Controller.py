@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,11 +27,26 @@ from src.Settings.args import args
 
 
 def worker_job_lib(individual, idx, random_seed):
+    """
+    Multiprocessing function that creates trajectories
+    :param individual: current object that generates
+    :param idx: index of the starting point
+    :param random_seed: random seed
+    :return: trajectories generated
+    """
     distances, tra, real_tra, path = individual.create_trajectory(random_seed=random_seed, idx=idx)
     return (distances, tra, real_tra, path)
 
 
 def save_data(vector_data, save_path, name, version):
+    """
+    Function that saves the data generated to disk
+    :param vector_data: data to save
+    :param save_path: path where to save the data
+    :param name: name of the file to save
+    :param version: version of the file to save
+    :return:
+    """
     all_real_points = []
     for el in vector_data:
         real_points = []
@@ -77,6 +92,16 @@ class Controller(object):
         self._list_genome = vector_data
 
     def initialise_individual_and_run(self, save_path, how_many, version="0", debug=False, random_seed=42):
+        """
+        Initialise the generator, run it using all the processors in the cpu
+        save the results on disk
+        :param save_path: where to save the data generated
+        :param how_many: how many trajectories to generate
+        :param version: version of the experiment
+        :param debug: True if debug in single core is necessary, False multiprocessing is on
+        :param random_seed: random seed
+        :return:
+        """
         individual = TrajectoryGeneration(
                                           genotype=self._list_genome,
                                           values_matrix=(self._loader_apf.x_values, self._loader_apf.y_values),

@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,7 +29,12 @@ class PrintTrajectories(DataLoader):
         super().__init__(log)
 
     def print_paths(self, path=None, name=None):
-
+        """
+        Print trajectories on Open Street Maps overlay
+        :param path: path where to save the trajectories
+        :param name: name of the folder where to save them
+        :return:
+        """
         if path is not None:
             path = "{}/{}/".format(path, name)
             os.mkdir(path)

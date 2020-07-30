@@ -1,6 +1,6 @@
 """
-TLSTM. Turing Learning system to generate trajectories
-Copyright (C) 2018  Alessandro Zonta (a.zonta@vu.nl)
+TrajectoriesRandomWalk. Towards a human-like movements generator based on environmental features
+Copyright (C) 2020  Alessandro Zonta (a.zonta@vu.nl)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,7 +36,13 @@ class PrintTrajectories(DataLoader):
         self._loader_apf.load_apf_only_routing_system()
 
     def print_paths(self, path=None, name=None, apf=False):
-
+        """
+        Print generated path on disk
+        :param path: folder where to save the graphs
+        :param name: name of the folder where to save the graphs
+        :param apf: True if graph with Artificial Potential Field, False if only graph with trajectory
+        :return:
+        """
         if path is not None:
             path = "{}/{}/".format(path, name)
             os.mkdir(path)
